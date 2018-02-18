@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movie'Time</title>
+
+    <link rel="stylesheet" href="Style.css">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script src="Code.js" type="text/javascript"></script>
+</head>
+
+
+<body>
+    <header>
+        <h1><span>M</span>ovie'<span>T</span>ime</h1>
+    </header>
+    <main>
+        <section>
+            <div id="movieSections"></div>
+            <div class="addMovie">
+                <button id="AddMovieBtn">
+            <i id="addIcon" class="fas fa-plus-square fa-3x"></i>
+                    </button>
+                <span>Add Movie</span>
+            </div>
+            <div class="searchMovie">
+                <!--<input id="searchMovies" type="text" placeholder=" Search.." value="">-->
+
+                <button id="sortMovies"> Order by Title</button>
+            </div>
+        
+            <div id="formMovie">
+                <button id="closeContainer">
+                <i id="closeIcon" class="fas fa-window-close fa-2x"></i>
+                    </button>
+                <div id="inputBox">
+
+                    <label for="directorInput">Type in director</label>
+                    <input id="directorInput" type="text" value="">
+
+                    <label for="yearInput">Type in year movie was realeased</label>
+                    <input id="yearInput" type="text" value="">
+
+                    <label for="titleInput">Type in title</label>
+                    <input id="titleInput" type="text" value="">
+                    <button id="submitMovie">Add Movie!</button>
+                </div>
+            </div>
+        </section>
+        <section id="movieContainer">
+
+        </section>
+
+    </main>
+</body>
+
+</html>
