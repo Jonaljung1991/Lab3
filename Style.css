@@ -209,7 +209,6 @@ section {
     background-color: darkred;
     cursor: pointer;
     text-decoration: underline;
-    transition: 0.5s;
 }
 
 #movieContainer {
