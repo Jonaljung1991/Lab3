@@ -26,6 +26,7 @@ header h1 {
 
 h1 span {
     color: darkred;
+    cursor: pointer;
 }
 
 main {

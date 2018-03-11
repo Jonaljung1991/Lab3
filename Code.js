@@ -27,7 +27,8 @@ let loaded = function () {
         movieContainer: document.getElementById("movieContainer"),
         removeCard: document.getElementsByClassName("removeCard")[0],
         sortMovies: document.getElementById("sortMovies"),
-        movieSections: document.getElementById("movieSections")
+        movieSections: document.getElementById("movieSections"),
+        MovieTimeM: document.getElementById("M")
 
     };
 
@@ -182,35 +183,93 @@ let loaded = function () {
     };
 
     function sort(Event) {
+        htmlElements.movieSections.innerHTML = "";
         htmlElements.movieContainer.innerHTML = "";
-        db.ref("Movielist").orderByChild("Title").limitToFirst(4).on("value", function (snapshot) {
+        db.ref("Movielist").orderByChild("Title").on("value", function (snapshot) {
 
-            htmlElements.movieContainer.innerHTML = "";
+            let movies = [];
+            let list = 0;
+            let pages = 1;
             let movieList = snapshot.forEach(child => {
                 let object = child.val();
                 let key = child.key;
+                list++;
+                pages = Math.ceil(list / 4);
 
+                object.id = key;
+                movies.push(object);
+
+
+            })
+
+            let nr = 1;
+            let limit = 0;
+            let listOfNr = [];
+
+            for (let i = 0; i < movies.length; i++) {
+                let movie = movies[i];
                 let card = document.createElement("div");
                 card.className = "card";
 
-                card.innerHTML = `<div class="imgDiv"><img></div> <div class="cardInfo"><ul><li>Director : ${object.Director}</li>
-                            <li>Release : ${object.Release}</li>
-                           <li> Title : ${object.Title}</li>
+                card.innerHTML = `<div class="imgDiv"><img></div> <div class="cardInfo"><ul><li>Director : ${movie.Director}</li>
+                            <li>Release : ${movie.Release}</li>
+                           <li> Title : ${movie.Title}</li>
                             </ul></div><div class="removeCard"><p>Remove movie</p></div>`;
-
                 let removeCard = card.getElementsByClassName("removeCard")[0];
                 removeCard.addEventListener("click", function (Event) {
 
-                    db.ref("Movielist/" + key).remove();
-
-
+                    db.ref("Movielist/" + movie.id).remove();
 
                 })
 
                 htmlElements.movieContainer.appendChild(card);
-            })
+                if ((i) === 3) {
+                    break;
+                }
 
-            pagination();
+            }
+            for (i = 0; i < pages; i++) {
+                let pages = document.createElement("a");
+                pages.innerHTML = `${nr}`;
+                nr++;
+                htmlElements.movieSections.appendChild(pages);
+
+
+                pages.addEventListener("click", function (event) {
+                    htmlElements.movieContainer.innerHTML = "";
+                    let value = 0;
+                    for (i = 0; i < listOfNr.length; i++) {
+                        if (pages.innerHTML == (i + 1))
+                            value = listOfNr[i];
+
+                    }
+                    for (i = 0; i < movies.length; i++) {
+                        // console.log(movies[i]);
+                        if ((i) >= value && (i) <= value + 3) {
+
+                            let movie = movies[i];
+                            let card = document.createElement("div");
+                            card.className = "card";
+
+                            card.innerHTML = `<div class="imgDiv"><img></div> <div class="cardInfo"><ul><li>Director : ${movie.Director}</li>
+                            <li>Release : ${movie.Release}</li>
+                           <li> Title : ${movie.Title}</li>
+                            </ul></div><div class="removeCard"><p>Remove movie</p></div>`;
+
+
+                            let removeCard = card.getElementsByClassName("removeCard")[0];
+                            removeCard.addEventListener("click", function (Event) {
+
+                                db.ref("Movielist/" + movie.id).remove();
+                            })
+
+                            htmlElements.movieContainer.appendChild(card);
+                        }
+                    }
+                }) // Pages
+                listOfNr.push(limit);
+                limit += 4;
+            }
         }) // Snapshot
     }; // function
 
@@ -261,6 +320,9 @@ let loaded = function () {
     }
     start();
 
+    htmlElements.MovieTimeM.addEventListener("click", function (event) {
+        window.location.href = "index.html";
+    })
     htmlElements.sortMovies.addEventListener("click", sort);
     htmlElements.addFilm.addEventListener("click", läggTillFilm);
     htmlElements.closeContainer.addEventListener("click", stängLäggTillFilm);
